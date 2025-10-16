@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../lib/axios";
 
+
 // Check authentication status
 export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
@@ -17,8 +18,8 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
-// Signup (unchanged)
-export const signUser = createAsyncThunk(
+// Signup
+export const signinUser = createAsyncThunk(
   "auth/signup",
   async (credentials, thunkAPI) => {
     try {
@@ -66,6 +67,8 @@ const initialState = {
   authUser: null,
   isCheckingAuth: false,
   isSigningIn: false,
+  signInError:null,
+  signInMessage:null,
   isLoggingIn: false,
   logInError: null,
   logInMessage: null,
@@ -83,6 +86,8 @@ const authSlice = createSlice({
       state.logInMessage = null;
       state.logOutMessage = null;
       state.logOutError = null;
+      state.signInError = null;
+      state.signInMessage = null;
     },
   },
   extraReducers: (builder) => {
@@ -102,6 +107,23 @@ const authSlice = createSlice({
         state.error = action.payload || action.error.message;
       })
 
+      //Signup
+      .addCase(signinUser.pending,(state) =>{
+        state.isSigningIn = true;
+        state.signInError = null;
+        state.signInMessage = null;
+      })
+      .addCase(signinUser.fulfilled,(state,action)=>{
+        state.isSigningIn = false;
+        state.authUser = action.payload;
+        state.signInMessage = "Signup Successful";
+      })
+      .addCase(signinUser.rejected,(state,action)=>{
+        state.isSigningIn = false;
+        state.authUser = null;
+        state.signInError = action.payload;
+        state.signInMessage = null;
+      })
       // Login
       .addCase(loginUser.pending, (state) => {
         state.isLoggingIn = true;
