@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { signUser } from "../features/auth/authSlice";
+import { signinUser } from "../features/auth/authSlice";
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const SignUpPage = () => {
 
     try {
       // Wait for API call to finish and unwrap result
-      const user = await dispatch(signUser(formData)).unwrap();
+      const user = await dispatch(signinUser(formData)).unwrap();
       toast.success("Signup successful!");
       console.log("Signed up user:", user); // Optional: for debugging
     } catch (error) {

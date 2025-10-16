@@ -37,3 +37,15 @@ export const createProduct = async (req, res) => {
         res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
     }
 };
+
+export const getMyProducts = async (req, res) => {
+  try {
+    const myAds = await Product.find({ postedBy: req.user._id });
+    res.status(STATUS_CODES.OK).json(myAds);
+  } catch (error) {
+    console.log("Error in getMyProducts:", error.message);
+    res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ message: "Internal server error" });
+  }
+};

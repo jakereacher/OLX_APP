@@ -1,8 +1,8 @@
-// src/components/Navbar.jsx
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, clearError } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -10,7 +10,6 @@ export default function Navbar() {
     (state) => state.auth
   );
 
-  // Show toast messages
   useEffect(() => {
     if (logOutMessage) {
       toast.success(logOutMessage);
@@ -31,6 +30,9 @@ export default function Navbar() {
       <div className="font-bold text-lg">My App</div>
       {authUser ? (
         <div className="flex items-center space-x-4">
+          <Link to="/" className="hover:underline">Home</Link>
+          <Link to="/create-ad" className="hover:underline">Create Ad</Link>
+          <Link to="/my-ads" className="hover:underline">View My Ads</Link>
           <span>Welcome, {authUser.fullname}</span>
           <button
             onClick={handleLogout}
@@ -43,9 +45,9 @@ export default function Navbar() {
           </button>
         </div>
       ) : (
-        <a href="/login" className="hover:underline">
+        <Link to="/login" className="hover:underline">
           Login
-        </a>
+        </Link>
       )}
     </nav>
   );
